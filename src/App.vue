@@ -1,28 +1,18 @@
 <template>
   <div class="app">
-    <SearchBar />
-    <User />
+    <Search />
+    <Profile />
   </div>
 </template>
 
 <script>
-import SearchBar from "./components/SearchBar";
-import User from "./components/User";
-import { provide } from "vue";
-import store from "@/store";
+import Search from "./components/Search.vue";
+import Profile from "./components/Profile.vue";
 
 export default {
-  name: "App",
   components: {
-    SearchBar,
-    User,
-  },
-  setup() {
-    provide("store", store);
-
-    store.methods.searchUser();
-
-    return { store };
+    Search,
+    Profile,
   },
 };
 </script>

@@ -3,13 +3,12 @@
     <div class="search">
       <input
         class="search - input"
-        ref="username"
         type="text"
         placeholder="Search Github username..."
       />
     </div>
-    <span class="error-message"></span>
-    <button class="search-button">Search</button>
+    <span class="error-message">no result</span>
+    <button type="submit" class="search-button">Search</button>
   </div>
 </template>
 
