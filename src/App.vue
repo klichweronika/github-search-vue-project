@@ -20,18 +20,22 @@ export default {
     };
   },
   methods: {
-    handleSearch(value) {
-      fetch(`https://api.github.com/users/${value}`)
-        .then((response) => response.json())
-        .then((user) => (this.user = user))
-        .catch((error) => console.log(error));
+    async handleSearch(value) {
+      try {
+        const response = await fetch(`https://api.github.com/users/${value}`);
+        this.user = await response.json();
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
-  mounted() {
-    fetch("https://api.github.com/users/octocat")
-      .then((response) => response.json())
-      .then((user) => (this.user = user))
-      .catch((error) => console.log(error));
+  async mounted() {
+    try {
+      const response = await fetch("https://api.github.com/users/octocat");
+      this.user = await response.json();
+    } catch (err) {
+      console.log(err);
+    }
   },
 };
 </script>
@@ -54,6 +58,7 @@ body {
 html {
   font-size: 70%;
 }
+
 #app {
   width: 50%;
 }

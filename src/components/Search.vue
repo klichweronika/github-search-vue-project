@@ -1,5 +1,5 @@
 <template>
-  <form class="search-container" @submit.prevent="makeSearch">
+  <form class="search-container" @submit.prevent="findUser">
     <div class="search">
       <input
         class="search - input"
@@ -7,9 +7,9 @@
         placeholder="Search Github username..."
         v-model="search"
         required
+        v-if="errorSearch"
       />
     </div>
-    <!-- <span class="error-message">no result</span> -->
     <button type="submit" class="search-button">Search</button>
   </form>
 </template>
@@ -23,7 +23,7 @@ export default {
     };
   },
   methods: {
-    makeSearch() {
+    findUser() {
       this.$emit("search", this.search);
     },
   },
