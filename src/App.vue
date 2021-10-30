@@ -1,18 +1,37 @@
 <template>
-  <div class="app">
-    <Search />
-    <Profile />
-  </div>
+  <Search @search="handleSearch" />
+  <user :user="user" v-if="user" />
 </template>
 
 <script>
 import Search from "./components/Search.vue";
-import Profile from "./components/Profile.vue";
+import User from "./components/User.vue";
 
 export default {
+  name: "App",
   components: {
     Search,
-    Profile,
+    User,
+  },
+
+  data() {
+    return {
+      user: null,
+    };
+  },
+  methods: {
+    handleSearch(value) {
+      fetch(`https://api.github.com/users/${value}`)
+        .then((response) => response.json())
+        .then((user) => (this.user = user))
+        .catch((error) => console.log(error));
+    },
+  },
+  mounted() {
+    fetch("https://api.github.com/users/octocat")
+      .then((response) => response.json())
+      .then((user) => (this.user = user))
+      .catch((error) => console.log(error));
   },
 };
 </script>
@@ -28,28 +47,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 92.5vh;
+  height: 90vh;
   position: relative;
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 70%;
 }
-
-.unavailable {
-  color: #c3cddd !important;
-}
-
-@media (min-width: 768px) {
-  .app {
-    width: 85%;
-    padding: 4rem;
-  }
-}
-
-@media (min-width: 1440px) {
-  .app {
-    width: 750px;
-  }
+#app {
+  width: 50%;
 }
 </style>

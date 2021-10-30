@@ -1,30 +1,32 @@
 <template>
   <div class="user-container">
     <div class="user-details">
-      <img class="user-details-avatar" />
+      <img class="user-details-avatar" :src="avatar" :alt="name" />
       <div class="user-details-info">
-        <p class="user-details-paragraph"></p>
-        <p><a class="user-details-paragraph" href="#"></a></p>
-        <p class="user-details-paragraph">Joined ...</p>
+        <p class="user-details-paragraph">{{ name }}</p>
+        <p>
+          <a class="user-details-paragraph" :href="githubLink">@{{ login }}</a>
+        </p>
+        <p class="user-details-paragraph">Joined {{ formatedCreatedAt }}</p>
       </div>
     </div>
 
     <div class="user-profile">
       <p class="user-profile-bio">
-        {{ "This profile has no bio" }}
+        {{ bio ? bio : "This profile has no bio" }}
       </p>
       <div class="user-profile-stats">
         <div class="user-profile-box">
           <p>Repos</p>
-          <p></p>
+          <p>{{ repos }}</p>
         </div>
         <div class="user-profile-box">
           <p>Followers</p>
-          <p></p>
+          <p>{{ followers }}</p>
         </div>
         <div class="user-profile-box">
           <p>Following</p>
-          <p></p>
+          <p>{{ following }}</p>
         </div>
       </div>
 
@@ -34,21 +36,21 @@
         <div class="user-profile-label">
           <location-icon />
           <p>
-            {{ "Not Available" }}
+            {{ checkSocial(location) }}
           </p>
         </div>
         <div class="user-profile-label">
           <website-icon />
-          <a> "Not Available" }} </a>
+          <a> {{ checkSocial(blogUrl) }}</a>
         </div>
         <div class="user-profile-label">
           <twitter-icon />
-          <a target="_blank"> </a>
+          <a target="_blank">{{ checkSocial(twitterUsername) }} </a>
         </div>
         <div class="user-profile-label">
           <company-icon />
           <p>
-            {{ "Not Available" }}
+            {{ checkSocial(company) }}
           </p>
         </div>
       </div>
@@ -61,9 +63,57 @@ import LocationIcon from "../icons/Location.vue";
 import WebsiteIcon from "../icons/Website.vue";
 import TwitterIcon from "../icons/Twitter.vue";
 import CompanyIcon from "../icons/Company.vue";
+import moment from "moment";
 
 export default {
+  name: "user",
+  props: ["user"],
   components: { LocationIcon, WebsiteIcon, TwitterIcon, CompanyIcon },
+  watch: {
+    user: function (value) {
+      this.avatar = value.avatar_url;
+      this.name = value.name;
+      this.login = value.login;
+      this.bio = value.bio;
+      this.createdAt = value.created_at;
+      this.repos = value.public_repos;
+      this.followers = value.followers;
+      this.following = value.following;
+      this.location = value.location;
+      this.blogUrl = value.blog;
+      this.twitterUsername = value.twitter_username;
+      this.company = value.company;
+    },
+  },
+  data() {
+    return {
+      avatar: this.user.avatar_url,
+      name: this.user.name,
+      login: this.user.login,
+      bio: this.user.bio,
+      createdAt: this.user.created_at,
+      repos: this.user.public_repos,
+      followers: this.user.followers,
+      following: this.user.following,
+      location: this.user.location,
+      blogUrl: this.user.blog,
+      twitterUsername: this.user.twitter_username,
+      company: this.user.company,
+    };
+  },
+  methods: {
+    checkSocial(value) {
+      return value ? value : "Not Available";
+    },
+  },
+  computed: {
+    githubLink() {
+      return `https://github.com/${this.login}`;
+    },
+    formatedCreatedAt() {
+      return moment(this.createdAt).format("DD MMM YYYY");
+    },
+  },
 };
 </script>
 
@@ -74,10 +124,10 @@ export default {
 }
 
 .user-container {
-  border: 2px solid #b9d6fb;
   border-radius: 1.8rem;
   background-color: #f6faff;
   padding: 4rem;
+  box-shadow: 1px 1px 10px 1px #4b6a9b78;
 }
 
 .user-details {
@@ -112,7 +162,7 @@ export default {
 .user-profile-stats {
   display: flex;
   justify-content: space-between;
-  background-color: rgb(226, 230, 248);
+  background-color: #4b6a9b3f;
   margin: 1.5rem 0;
   padding: 2rem 2.5rem;
   border-radius: 1.2rem;
@@ -127,73 +177,19 @@ export default {
 
 .user-profile-details {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
 }
 
 .user-profile-label {
   display: flex;
   align-items: center;
+  margin: 0 auto;
 }
 
 .user-profile-label > p,
 a {
   color: #4b6a9b;
   text-decoration: none;
-}
-
-@media (min-width: 500) {
-  .user {
-    padding: 3rem 3.5rem;
-  }
-
-  .user-info-avatar {
-    width: 117px;
-  }
-
-  .user-info-headline {
-    font-size: 2.6rem;
-  }
-
-  .user-profile {
-    margin-top: 2.5rem;
-  }
-
-  .user-profile-stats {
-    margin: 2.5rem 0;
-  }
-
-  .user-profile-stats > div {
-    align-items: flex-start;
-  }
-
-  .user-profile-details {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 500) {
-  .user-profile {
-    margin-left: 15rem;
-    margin-top: -1rem;
-  }
-
-  .user-info-avatar {
-    margin-right: 1rem;
-  }
-
-  .user-info-details {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .user-info-joined {
-    margin-top: 1rem;
-  }
-
-  .user-profile-bio {
-    width: 90%;
-  }
 }
 </style>

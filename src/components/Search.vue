@@ -1,21 +1,38 @@
 <template>
-  <div class="search-container">
+  <form class="search-container" @submit.prevent="makeSearch">
     <div class="search">
       <input
         class="search - input"
         type="text"
         placeholder="Search Github username..."
+        v-model="search"
+        required
       />
     </div>
-    <span class="error-message">no result</span>
+    <!-- <span class="error-message">no result</span> -->
     <button type="submit" class="search-button">Search</button>
-  </div>
+  </form>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "search",
+  data() {
+    return {
+      search: "",
+    };
+  },
+  methods: {
+    makeSearch() {
+      this.$emit("search", this.search);
+    },
+  },
+};
+</script>
 
 <style scoped>
 .search-container {
+  box-shadow: 1px 1px 10px 1px #4b6a9b78;
   background-color: #f6faff;
   padding: 1rem;
   border-radius: 1.8rem;
@@ -47,10 +64,6 @@
   outline: none;
 }
 
-.search-input::placeholder {
-  color: #4b6a9b;
-}
-
 .error-message {
   position: absolute;
   color: #f74646;
@@ -61,8 +74,7 @@
 
 .search-button {
   border: none;
-  background-color: #0079ff;
-  color: #fff;
+  background-color: #4b6a9b3f;
   cursor: pointer;
   font-size: 1.4rem;
   font-weight: bold;
@@ -79,7 +91,7 @@
     width: 70%;
   }
 
-  .err {
+  .error {
     font-size: 1.5rem;
     right: 12rem;
   }
