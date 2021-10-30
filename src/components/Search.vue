@@ -7,7 +7,6 @@
         placeholder="Search Github username..."
         v-model="search"
         required
-        v-if="errorSearch"
       />
     </div>
     <button type="submit" class="search-button">Search</button>
